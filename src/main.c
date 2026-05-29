@@ -1,10 +1,9 @@
 #include <stdio.h>
+#include <conio.h>
 
 int main()
 {
-    printf("Hello, World!\n");
-    while (1)
-        ;
-
-    return 0;
+    printf("Press any key to exit the program...");
+    if (getch())
+        return 0; // 0 indicates successful termination
 }

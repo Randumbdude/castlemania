@@ -6,12 +6,11 @@ CXX = "D:/My Program Files/mingw64/bin/g++.exe"
 OUT = bin/castlemania_interface.exe
 
 # Paths
-#INCLUDES = -I./include
-#LIBS = -L./lib 
+INCLUDES = -I./libs
 
 # Find sources
-C_SRC := $(shell powershell -Command "Get-ChildItem -Recurse src -Include *.c | %% { $$_.FullName }")
-CPP_SRC := $(shell powershell -Command "Get-ChildItem -Recurse src -Include *.cpp | %% { $$_.FullName }")
+C_SRC := $(shell powershell -Command "Get-ChildItem -Recurse src,libs -Include *.c | %% { $$_.FullName }")
+CPP_SRC := $(shell powershell -Command "Get-ChildItem -Recurse src,libs -Include *.cpp | %% { $$_.FullName }")
 
 # Object files
 C_OBJ := $(C_SRC:.c=.o)
