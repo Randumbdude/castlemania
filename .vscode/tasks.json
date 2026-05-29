@@ -1,0 +1,33 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+{
+  "label": "move-o-files-to-bin",
+  "type": "shell",
+  "command": "powershell",
+  "args": [
+    "-Command",
+    "if (!(Test-Path bin)) { New-Item -ItemType Directory bin | Out-Null }; Get-ChildItem -Recurse -Filter *.o | ForEach-Object { Move-Item $_.FullName bin -Force }"
+  ],
+  "problemMatcher": []
+},
+    {
+      "label": "build-project",
+      "type": "shell",
+      "command": "\"D:\\apps\\make\\bin\\make.exe\"",
+      "problemMatcher": []
+    },
+    {
+      "label": "build-and-collect",
+      "dependsOn": [
+        "build-project",
+        "move-o-files-to-bin"
+      ],
+      "dependsOrder": "sequence",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}

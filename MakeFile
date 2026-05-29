@@ -1,0 +1,38 @@
+# Compilers
+CC  = "D:/My Program Files/mingw64/bin/gcc.exe"
+CXX = "D:/My Program Files/mingw64/bin/g++.exe"
+
+# Output
+OUT = bin/castlemania_interface.exe
+
+# Paths
+#INCLUDES = -I./include
+#LIBS = -L./lib 
+
+# Find sources
+C_SRC := $(shell powershell -Command "Get-ChildItem -Recurse src -Include *.c | %% { $$_.FullName }")
+CPP_SRC := $(shell powershell -Command "Get-ChildItem -Recurse src -Include *.cpp | %% { $$_.FullName }")
+
+# Object files
+C_OBJ := $(C_SRC:.c=.o)
+CPP_OBJ := $(CPP_SRC:.cpp=.o)
+
+# Default target
+all: $(OUT)
+
+# Link everything with g++
+$(OUT): $(C_OBJ) $(CPP_OBJ)
+	$(CXX) -g $(C_OBJ) $(CPP_OBJ) $(LIBS) -o $(OUT)
+
+# Compile C files
+%.o: %.c
+	$(CC) -c -g $(INCLUDES) $< -o $@
+
+# Compile C++ files
+%.o: %.cpp
+	$(CXX) -c -g $(INCLUDES) $< -o $@
+
+# Clean
+clean:
+	del /S *.o 2>nul
+	del $(OUT) 2>nul
