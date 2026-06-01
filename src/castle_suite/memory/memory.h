@@ -28,7 +28,7 @@ typedef struct
 typedef struct
 {
     tile board[HEIGHT][WIDTH];
-    tile_info board_info[HEIGHT][WIDTH];
+    tile_info local_board_info[HEIGHT][WIDTH];
 
     uint16_t total_mines;
     uint16_t flagged_mines;
