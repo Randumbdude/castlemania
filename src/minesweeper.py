@@ -136,12 +136,12 @@ class Minesweeper:
                 safe = self.reveal(r, c)
                 if not safe:
                     self.print_board(reveal_all=True)
-                    print("\n💥 Game Over! You hit a mine. 💥")
+                    print("\nGame Over! You hit a mine.")
                     break
 
             if self.check_win():
                 self.print_board(reveal_all=True)
-                print("\n🏆 Congratulations! You won! 🏆")
+                print("\nCongratulations! You won!")
                 break
 
 
