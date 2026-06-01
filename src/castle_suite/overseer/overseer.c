@@ -14,7 +14,7 @@ int overseer_printf(const char *format, ...)
     current_time = time(NULL);               // get current time
     struct tm *t = localtime(&current_time); // convert to local time
 
-    printf("overseer@%02d:%02d:%02d> ",
+    printf("$~ overseer@%02d:%02d:%02d> ",
            t->tm_hour, t->tm_min, t->tm_sec);
 
     va_list args;
