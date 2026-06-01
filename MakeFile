@@ -6,7 +6,7 @@ CXX = "D:/My Program Files/mingw64/bin/g++.exe"
 OUT = bin/castlemania_interface.exe
 
 # Paths
-INCLUDES = -I./libs
+INCLUDES = -I./libs -I./src 
 
 # Find sources
 C_SRC := $(shell powershell -Command "Get-ChildItem -Recurse src,libs -Include *.c | %% { $$_.FullName }")
