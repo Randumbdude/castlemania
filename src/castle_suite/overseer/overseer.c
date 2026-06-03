@@ -1,3 +1,4 @@
+
 #include "overseer.h"
 #include "main.h"
 #include "castle_suite/memory/memory.h"
@@ -6,8 +7,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdarg.h>
-
-uint8_t overseer_id = 0; // should always be 0 anyway :|
+#include <windows.h>
 
 int overseer_printf(const char *format, ...)
 {
@@ -24,9 +24,28 @@ int overseer_printf(const char *format, ...)
     return result;
 }
 
-void overseer_initialize(void)
+// defining runtime
+void overseer_runtime_method(void);
+// the struct representing the process to be scheduled
+process_t overseer_process = {
+    .process_name = "overseer",
+    .runtime_method = (void *)overseer_runtime_method,
+    .is_running = 1};
+// the runtime method that will be looped by the scheduler
+void overseer_runtime_method()
 {
-    overseer_id = register_to_message_handler();
+    overseer_printf("overseer process is running\n");
+    Sleep(1000);
 
-    overseer_printf("registration with ID#%d completed\n", overseer_id);
+    if (get_inbox_size(overseer_process.process_id) > 0)
+    {
+        message_t message = get_message(overseer_process.process_id, 0);
+        overseer_printf("received message_ID#%d successfully\n", message.message_id);
+    }
+}
+// register the process to the scheduler automatically before main() is called
+proc_hook void aoverseer_auto_register(void)
+{
+    register_to_scheduler(&overseer_process);
+    register_to_message_handler(&overseer_process);
 }

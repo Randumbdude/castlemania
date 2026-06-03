@@ -1,3 +1,4 @@
+#include "main.h"
 #include <stdio.h>
 #include <conio.h>
 #include <time.h>
@@ -6,17 +7,13 @@
 #include "castle_suite/messages/message_handler.h"
 #include "mania_suite/logic_agent/logic_agent.h"
 
+#include "castle_suite/scheduler.hpp"
+
 time_t current_time;
 
 int main()
 {
-    printf("preparing...\n");
-
-    message_handler_initialize();
-    overseer_initialize();
-    logic_agent_initialize();
-
-    printf("ready!\n");
+    scheduler_initialize();
 
     printf("Press any key to exit the program...");
     if (getch())

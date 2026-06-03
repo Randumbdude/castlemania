@@ -1,8 +1,10 @@
 #pragma once
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 #include <stdint.h>
-
-extern uint8_t overseer_id;
-
-int overseer_printf(const char *format, ...);
-
-void overseer_initialize(void);
+    int overseer_printf(const char *format, ...);
+#ifdef __cplusplus
+}
+#endif

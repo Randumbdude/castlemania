@@ -3,11 +3,11 @@
 
 #include "castle_suite/memory/memory.h"
 #include "castle_suite/messages/message_handler.h"
-#include "castle_suite/overseer/overseer.h"
 
 #include <stdio.h>
 #include <time.h>
 #include <stdarg.h>
+#include <windows.h>
 
 uint8_t logic_agent_id;
 
@@ -25,26 +25,39 @@ int logic_printf(const char *format, ...)
     return result;
 }
 
-void logic_agent_initialize(void)
+// defining runtime
+void logic_agent_runtime_method(void);
+// the struct representing the process to be scheduled
+process_t logic_agent_process = {
+    .process_name = "logic_agent",
+    .runtime_method = (void *)logic_agent_runtime_method,
+    .is_running = 1};
+int i;
+// the runtime method that will be looped by the scheduler
+void logic_agent_runtime_method()
 {
-    logic_agent_id = register_to_message_handler();
-
-    logic_printf("registration with ID#%d completed\n", logic_agent_id);
-
-    message_t message = {
-        .sender_type = logic_type,
-        .reciever_id = overseer_id,
-        .message_id = -1,
-        .action_proposal = {
-            .type = dig,
-            .x = (WIDTH / 2),
-            .y = (HEIGHT / 2),
-            .confidence = 1.0f}};
-    send_message(&message);
-
-    logic_printf("sent message_ID#%d successfully\n", message.message_id);
-    message.message_id = -1; // reset message ID to simulate a new message being sent back to the overseer
-
-    message = get_message(overseer_id, 0);
-    logic_printf("received message_ID#%d successfully\n", message.message_id);
+    logic_printf("logic_agent process is running\n");
+    Sleep(1000);
+    if (i == 0)
+    {
+        message_t message = {
+            .sender_type = logic_type,
+            .reciever_id = 0,
+            .message_id = -1,
+            .action_proposal = {
+                .type = dig,
+                .x = (WIDTH / 2),
+                .y = (HEIGHT / 2),
+                .confidence = 1.0f}};
+        // message_handler will auto assign a unique message_id when sending
+        send_message(&message);
+        logic_printf("sent message_ID#%d successfully\n", message.message_id);
+        i++;
+    }
+}
+// register the process to the scheduler automatically before main() is called
+proc_hook void logic_agent_auto_register(void)
+{
+    register_to_scheduler(&logic_agent_process);
+    register_to_message_handler(&logic_agent_process);
 }
