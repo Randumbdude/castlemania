@@ -78,20 +78,19 @@ command to run if program contains helper info
 
 Contributors names and contact info
 
-ex. Dominique Pizzie  
-ex. [@DomPizzie](https://twitter.com/dompizzie)
+O_Riley
 
 ## Version History
 
-* 0.2
+* 0.1
     * Various bug fixes and optimizations
     * See [commit change]() or See [release history]()
-* 0.1
-    * Initial Release
+* 0.0
+    * Development start.
 
 ## License
 
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
+This project is licensed under the MIT License - see the LICENSE file for details
 
 ## Acknowledgments
 

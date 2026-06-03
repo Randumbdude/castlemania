@@ -26,6 +26,7 @@ int message_handler_printf(const char *format, ...)
 
 #define MAX_MESSAGES 256
 message_t message_box[255][MAX_MESSAGES]; // 255 processs (max uint8_t value) with 256 messages each, should be more than enough for now
+uint64_t message_box_indexes[MAX_MESSAGES];
 
 void message_handler_initialize(void)
 {
@@ -37,17 +38,17 @@ void register_to_message_handler(process_t *process)
     message_handler_printf("process \"%s\" registered with process_ID#%d\n", process->process_name, process->process_id);
 }
 
-message_t get_message(uint8_t process_id, uint64_t index)
+message_t get_message(process_t process, uint64_t index)
 {
-    return message_box[process_id][index];
+    return message_box[process.process_id][index];
 }
 
-uint64_t get_inbox_size(uint8_t process_id)
+uint64_t get_inbox_size(process_t process)
 {
     uint64_t size = 0;
     for (uint64_t i = 0; i < MAX_MESSAGES; i++)
     {
-        if (message_box[process_id][i].message_id != 0)
+        if (message_box[process.process_id][i].message_id != 0)
             size++;
         else
             break;
@@ -115,8 +116,11 @@ void print_message(const message_t *message)
 uint64_t send_message(message_t *message)
 {
     message->message_id = next_message_id++;
-    message_box[message->reciever_id][0] = *message;
-
+    message_box[message->reciever_id][(message_box_indexes[message->reciever_id] >= MAX_MESSAGES) ? 0 : message_box_indexes[message->reciever_id]] = *message;
+    if ((message_box_indexes[message->reciever_id] >= MAX_MESSAGES))
+    {
+        message_box_indexes[message->reciever_id] = 0;
+    }
     message_handler_printf("message sent with message_ID#%" PRIu64 "\n", message->message_id);
 
     return message->message_id;

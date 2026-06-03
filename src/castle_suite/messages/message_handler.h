@@ -59,6 +59,7 @@ extern "C"
      * @return void
      */
     void message_handler_initialize(void);
+
     /**
      * @brief Registers an process with the message handler and returns its unique identifier.
      *
@@ -75,6 +76,7 @@ extern "C"
      * @see message_handler_printf()
      */
     void register_to_message_handler(process_t *process);
+
     /**
      * @brief Retrieves a message from the message box.
      *
@@ -87,7 +89,7 @@ extern "C"
      *
      * @warning No bounds checking is performed. Ensure index is valid for the process.
      */
-    message_t get_message(uint8_t process_id, uint64_t index);
+    message_t get_message(process_t process, uint64_t index);
 
     /**
      * @brief Gets the number of messages in an process's inbox
@@ -96,7 +98,7 @@ extern "C"
      * @note Iterates through the message box array until a message with ID 0 is found,
      *       assuming messages are stored contiguously and terminated by a zero ID
      */
-    uint64_t get_inbox_size(uint8_t process_id);
+    uint64_t get_inbox_size(process_t process);
 
     /**
      * @brief Prints every field inside a message_t.

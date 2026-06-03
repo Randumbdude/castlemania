@@ -34,13 +34,13 @@ process_t overseer_process = {
 // the runtime method that will be looped by the scheduler
 void overseer_runtime_method()
 {
-    overseer_printf("overseer process is running\n");
     Sleep(1000);
 
-    if (get_inbox_size(overseer_process.process_id) > 0)
+    if (get_inbox_size(overseer_process) >= 0)
     {
-        message_t message = get_message(overseer_process.process_id, 0);
-        overseer_printf("received message_ID#%d successfully\n", message.message_id);
+        message_t message = get_message(overseer_process, 0);
+        // overseer_printf("received message_ID#%d successfully\n", message.message_id);
+        print_message(&message);
     }
 }
 // register the process to the scheduler automatically before main() is called

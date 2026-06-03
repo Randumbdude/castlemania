@@ -1,5 +1,8 @@
 # courtesy of https://github.com/github/gitignore/blob/main/C.gitignore
 
+# other
+run_project.bat
+
 # Prerequisites
 *.d
 

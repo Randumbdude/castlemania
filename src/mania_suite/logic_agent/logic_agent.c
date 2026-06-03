@@ -36,7 +36,6 @@ int i;
 // the runtime method that will be looped by the scheduler
 void logic_agent_runtime_method()
 {
-    logic_printf("logic_agent process is running\n");
     Sleep(1000);
     if (i == 0)
     {
@@ -51,7 +50,7 @@ void logic_agent_runtime_method()
                 .confidence = 1.0f}};
         // message_handler will auto assign a unique message_id when sending
         send_message(&message);
-        logic_printf("sent message_ID#%d successfully\n", message.message_id);
+        // logic_printf("sent message_ID#%d successfully\n", message.message_id);
         i++;
     }
 }

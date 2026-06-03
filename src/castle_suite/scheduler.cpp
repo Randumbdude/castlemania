@@ -12,6 +12,7 @@
 #include <time.h>
 #include <stdarg.h>
 #include <string.h>
+#include <windows.h>
 
 // C includes
 #include "main.h"
@@ -38,6 +39,11 @@ uint8_t next_process_id = 0;
 
 void scheduler_runtime_method(void)
 {
+    DWORD tid = GetCurrentThreadId();
+    scheduler_printf("scheduler running on thread ID: %lu (0x%lx)\n",
+                     (unsigned long)tid,
+                     (unsigned long)tid);
+
     std::vector<std::thread> threads;
 
     for (uint8_t i = 0; i < next_process_id; i++)
@@ -46,11 +52,16 @@ void scheduler_runtime_method(void)
         {
             threads.emplace_back([i]()
                                  {
+            DWORD tid2 = GetCurrentThreadId();
+            scheduler_printf("process \"%s\" running on thread ID: %lu (0x%lx)\n",
+                scheduled_processes[i].process_name,
+                (unsigned long)tid2,
+                (unsigned long)tid2);
             while (scheduled_processes[i].is_running == 1)
             {
                 void (*process_method)() = (void (*)())scheduled_processes[i].runtime_method;
                 process_method();
-                scheduler_printf("process_ID#%d executed successfully\n", i);
+                // scheduler_printf("process_ID#%d executed successfully\n", i);
             } });
         }
     }
@@ -72,6 +83,7 @@ extern "C"
         if (next_process_id >= MAX_PROCESSES)
         {
             scheduler_printf("fatal error: maximum number of scheduled processes (%d) exceeded.\n", MAX_PROCESSES);
+            throw std::runtime_error("maximum number of scheduled processes exceeded");
             return -1; // Indicate error
         }
         if (strcmp(process_to_schedule->process_name, "overseer") == 0)
