@@ -62,21 +62,19 @@ void print_message(const message_t *message)
         return;
     }
 
-    message_handler_printf("message {\n");
-    message_handler_printf("  sender_type: %s (%d)\n",
-                           message->sender_process.process_name,
-                           message->sender_process.process_id);
-    message_handler_printf("  reciever_id: %u\n", (unsigned int)message->reciever_id);
-    message_handler_printf("  message_id: %" PRIu64 "\n", message->message_id);
-    message_handler_printf("  action_proposal: {\n");
-    message_handler_printf("    type: %s (%d)\n",
-                           action_type_to_string(message->action_proposal.type),
-                           message->action_proposal.type);
-    message_handler_printf("    x: %u\n", (unsigned int)message->action_proposal.x);
-    message_handler_printf("    y: %u\n", (unsigned int)message->action_proposal.y);
-    message_handler_printf("    confidence: %.2f\n", message->action_proposal.confidence);
-    message_handler_printf("  }\n");
-    message_handler_printf("}\n");
+    message_handler_printf(
+        "message {\n"
+        "                               sender_type: %s (%d)\n"
+        "                               reciever_id: %u\n"
+        "                               message_id: %" PRIu64 "\n"
+        "                               action_proposal: {\n"
+        "                                 type: %s (%d)\n"
+        "                                 x: %u\n"
+        "                                 y: %u\n"
+        "                                 confidence: %.2f\n"
+        "                               }\n"
+        "                             }\n",
+        message->sender_process.process_name, message->sender_process.process_id, (unsigned int)message->reciever_id, message->message_id, action_type_to_string(message->action_proposal.type), message->action_proposal.type, (unsigned int)message->action_proposal.x, (unsigned int)message->action_proposal.y, message->action_proposal.confidence);
 }
 
 uint64_t send_message(message_t *message)
