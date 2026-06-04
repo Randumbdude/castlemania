@@ -106,8 +106,6 @@ extern "C"
     {
         scheduler_printf("finalizing...\n");
 
-        message_handler_initialize();
-
         std::thread scheduler_runtime_thread(scheduler_runtime_method);
 
         scheduler_printf("complete.\n");

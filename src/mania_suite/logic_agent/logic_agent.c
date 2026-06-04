@@ -32,15 +32,15 @@ process_t logic_agent_process = {
     .process_name = "logic_agent",
     .runtime_method = (void *)logic_agent_runtime_method,
     .is_running = 1};
-int i;
+int incr_1;
 // the runtime method that will be looped by the scheduler
 void logic_agent_runtime_method()
 {
-    Sleep(1000);
-    if (i == 0)
+    if (incr_1 == 0)
     {
+        Sleep(1000);
         message_t message = {
-            .sender_type = logic_type,
+            .sender_process = logic_agent_process,
             .reciever_id = 0,
             .message_id = -1,
             .action_proposal = {
@@ -51,7 +51,7 @@ void logic_agent_runtime_method()
         // message_handler will auto assign a unique message_id when sending
         send_message(&message);
         // logic_printf("sent message_ID#%d successfully\n", message.message_id);
-        i++;
+        incr_1++;
     }
 }
 // register the process to the scheduler automatically before main() is called

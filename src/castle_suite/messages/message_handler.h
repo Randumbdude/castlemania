@@ -7,15 +7,6 @@ extern "C"
 #include "game_interface/action_interface/action.h"
 #include "castle_suite/scheduler.hpp"
 
-    typedef enum
-    {
-        explorer_type,
-        logic_type,
-        pattern_type,
-        probability_type,
-        overseer_type
-    } process_type;
-
     /**
      * @struct message_t
      * @brief Represents a message passed between processs in the castle suite system.
@@ -27,7 +18,7 @@ extern "C"
      */
     typedef struct
     {
-        process_type sender_type;
+        process_t sender_process;
 
         uint8_t reciever_id;
 
@@ -47,18 +38,7 @@ extern "C"
      * @note This function uses variable arguments (variadic function) to support flexible message formatting.
      *       Ensure that the arguments match the format specifiers to avoid undefined behavior.
      */
-    // int message_handler_printf(const char *format, ...);
-
-    /**
-     * @brief Initializes the message handler system.
-     *
-     * Resets global identifiers for processs and messages to their initial state.
-     * This function should be called once during system initialization before
-     * any message handling operations begin.
-     *
-     * @return void
-     */
-    void message_handler_initialize(void);
+    int message_handler_printf(const char *format, ...);
 
     /**
      * @brief Registers an process with the message handler and returns its unique identifier.
@@ -90,15 +70,6 @@ extern "C"
      * @warning No bounds checking is performed. Ensure index is valid for the process.
      */
     message_t get_message(process_t process, uint64_t index);
-
-    /**
-     * @brief Gets the number of messages in an process's inbox
-     * @param process_id The ID of the process whose inbox size is to be retrieved
-     * @return The number of messages currently in the process's inbox
-     * @note Iterates through the message box array until a message with ID 0 is found,
-     *       assuming messages are stored contiguously and terminated by a zero ID
-     */
-    uint64_t get_inbox_size(process_t process);
 
     /**
      * @brief Prints every field inside a message_t.

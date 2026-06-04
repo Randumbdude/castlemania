@@ -3,11 +3,12 @@
 #include <time.h>
 #include <stdarg.h>
 #include <inttypes.h>
+#include <windows.h>
 
 #include "main.h"
 #include "castle_suite/scheduler.hpp"
 
-uint64_t next_message_id;
+uint64_t next_message_id = 0;
 
 int message_handler_printf(const char *format, ...)
 {
@@ -26,53 +27,18 @@ int message_handler_printf(const char *format, ...)
 
 #define MAX_MESSAGES 256
 message_t message_box[255][MAX_MESSAGES]; // 255 processs (max uint8_t value) with 256 messages each, should be more than enough for now
-uint64_t message_box_indexes[MAX_MESSAGES];
-
-void message_handler_initialize(void)
-{
-    next_message_id = 0;
-}
+process_t *process_indexes[255];
 
 void register_to_message_handler(process_t *process)
 {
+    process->unread_messages = 0;
+    process_indexes[process->process_id] = process;
     message_handler_printf("process \"%s\" registered with process_ID#%d\n", process->process_name, process->process_id);
 }
 
 message_t get_message(process_t process, uint64_t index)
 {
     return message_box[process.process_id][index];
-}
-
-uint64_t get_inbox_size(process_t process)
-{
-    uint64_t size = 0;
-    for (uint64_t i = 0; i < MAX_MESSAGES; i++)
-    {
-        if (message_box[process.process_id][i].message_id != 0)
-            size++;
-        else
-            break;
-    }
-    return size;
-}
-
-static const char *process_type_to_string(process_type type)
-{
-    switch (type)
-    {
-    case explorer_type:
-        return "explorer_type";
-    case logic_type:
-        return "logic_type";
-    case pattern_type:
-        return "pattern_type";
-    case probability_type:
-        return "probability_type";
-    case overseer_type:
-        return "overseer_type";
-    default:
-        return "unknown_process_type";
-    }
 }
 
 static const char *action_type_to_string(action_type type)
@@ -98,8 +64,8 @@ void print_message(const message_t *message)
 
     message_handler_printf("message {\n");
     message_handler_printf("  sender_type: %s (%d)\n",
-                           process_type_to_string(message->sender_type),
-                           message->sender_type);
+                           message->sender_process.process_name,
+                           message->sender_process.process_id);
     message_handler_printf("  reciever_id: %u\n", (unsigned int)message->reciever_id);
     message_handler_printf("  message_id: %" PRIu64 "\n", message->message_id);
     message_handler_printf("  action_proposal: {\n");
@@ -116,12 +82,33 @@ void print_message(const message_t *message)
 uint64_t send_message(message_t *message)
 {
     message->message_id = next_message_id++;
-    message_box[message->reciever_id][(message_box_indexes[message->reciever_id] >= MAX_MESSAGES) ? 0 : message_box_indexes[message->reciever_id]] = *message;
-    if ((message_box_indexes[message->reciever_id] >= MAX_MESSAGES))
+    message_box[message->reciever_id][(process_indexes[message->reciever_id]->unread_messages >= MAX_MESSAGES) ? 0 : process_indexes[message->reciever_id]->unread_messages++] = *message;
+    if ((process_indexes[message->reciever_id]->unread_messages >= MAX_MESSAGES))
     {
-        message_box_indexes[message->reciever_id] = 0;
+        process_indexes[message->reciever_id]->unread_messages = 0;
     }
     message_handler_printf("message sent with message_ID#%" PRIu64 "\n", message->message_id);
 
     return message->message_id;
+}
+
+// defining runtime
+void message_handler_runtime_method(void);
+
+// the struct representing the process to be scheduled
+process_t message_handler_process = {
+    .process_name = "message_handler",
+    .runtime_method = (void *)message_handler_runtime_method,
+    .is_running = 1};
+
+// the runtime method that will be looped by the scheduler
+void message_handler_runtime_method()
+{
+    Sleep(1000);
+}
+
+// register the process to the scheduler automatically before main() is called
+proc_hook void message_handler_auto_register(void)
+{
+    register_to_scheduler(&message_handler_process);
 }

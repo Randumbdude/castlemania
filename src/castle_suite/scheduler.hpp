@@ -12,6 +12,7 @@ extern "C"
         uint8_t process_id;
         void *runtime_method;
         uint8_t is_running;
+        uint8_t unread_messages;
     } process_t;
     uint8_t register_to_scheduler(process_t *process_to_schedule);
     int scheduler_printf(const char *format, ...);

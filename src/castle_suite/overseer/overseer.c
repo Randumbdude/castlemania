@@ -31,20 +31,23 @@ process_t overseer_process = {
     .process_name = "overseer",
     .runtime_method = (void *)overseer_runtime_method,
     .is_running = 1};
+
+uint8_t incr = 0;
+
 // the runtime method that will be looped by the scheduler
 void overseer_runtime_method()
 {
-    Sleep(1000);
-
-    if (get_inbox_size(overseer_process) >= 0)
+    if ((overseer_process.unread_messages >= 0) && (incr == 0))
     {
+        Sleep(1000);
         message_t message = get_message(overseer_process, 0);
         // overseer_printf("received message_ID#%d successfully\n", message.message_id);
         print_message(&message);
+        incr++;
     }
 }
 // register the process to the scheduler automatically before main() is called
-proc_hook void aoverseer_auto_register(void)
+proc_hook void overseer_auto_register(void)
 {
     register_to_scheduler(&overseer_process);
     register_to_message_handler(&overseer_process);
