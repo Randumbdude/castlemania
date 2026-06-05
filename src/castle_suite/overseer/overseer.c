@@ -38,7 +38,7 @@ uint8_t incr = 0;
 // the runtime method that will be looped by the scheduler
 void overseer_runtime_method()
 {
-    if ((overseer_process.unread_messages >= 0) && (incr == 0))
+    if ((overseer_process.unread_messages != 0) && (incr == 0))
     {
         Sleep(1000);
         message_t message = get_message(overseer_process, 0);
