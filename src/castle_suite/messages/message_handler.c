@@ -83,13 +83,13 @@ uint64_t send_message(message_t *message)
     message->message_id = next_message_id++;
     // this is a biggin.
     message_box[message->reciever_id][(process_indexes[message->reciever_id]->unread_messages >= MAX_MESSAGES) ? 0 : process_indexes[message->reciever_id]->unread_messages++] = *message;
+    message_handler_printf("message sent with message_ID#%" PRIu64 "\n", message->message_id);
     // check if the message box is full if so = 0;
     if ((process_indexes[message->reciever_id]->unread_messages >= MAX_MESSAGES))
     {
         process_indexes[message->reciever_id]->unread_messages = 0;
     }
     // print the message
-    message_handler_printf("message sent with message_ID#%" PRIu64 "\n", message->message_id);
     // return.
     return message->message_id;
 }

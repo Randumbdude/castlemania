@@ -1,26 +1,34 @@
 # Compilers
 CC  = gcc
 CXX = g++
+#NVCC = nvcc
+
+# CUDA installation path
+#CUDA_PATH = D:/Program Files/cuda/bin
 
 # Output
 OUT = bin/castlemania_interface.exe
 
 # Paths
-INCLUDES = -I./libs -I./src 
+INCLUDES = -I./libs -I./src #-I"$(CUDA_PATH)/include"
+#LIBS = -L./libs -lglfw3dll -lopengl32 -lgdi32
+#CUDA_LIBS = -L"$(CUDA_PATH)/lib/x64" -lcudart
 
 # Find sources
 C_SRC := $(shell powershell -Command "Get-ChildItem -Recurse src,libs -Include *.c | %% { $$_.FullName }")
 CPP_SRC := $(shell powershell -Command "Get-ChildItem -Recurse src,libs -Include *.cpp | %% { $$_.FullName }")
+#CU_SRC := $(shell powershell -Command "Get-ChildItem -Recurse src,libs -Include *.cu | %% { $$_.FullName }")
 
 # Object files
 C_OBJ := $(C_SRC:.c=.o)
 CPP_OBJ := $(CPP_SRC:.cpp=.o)
+#CU_OBJ := $(CU_SRC:.cu=.o)
 
 # Default target
 all: $(OUT)
 
 # Link everything with g++
-$(OUT): $(C_OBJ) $(CPP_OBJ)
+$(OUT): $(C_OBJ) $(CPP_OBJ) #$(CU_OBJ)
 	$(CXX) -g $(C_OBJ) $(CPP_OBJ) $(LIBS) -o $(OUT)
 
 # Compile C files
@@ -30,6 +38,10 @@ $(OUT): $(C_OBJ) $(CPP_OBJ)
 # Compile C++ files
 %.o: %.cpp
 	$(CXX) -c -g $(INCLUDES) $< -o $@
+
+# Compile CUDA files
+#%.o: %.cu
+#	$(NVCC) -c -g $(INCLUDES) $< -o $@
 
 # Clean
 clean:

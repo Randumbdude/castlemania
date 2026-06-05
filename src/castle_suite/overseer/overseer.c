@@ -3,6 +3,7 @@
 #include "main.h"
 #include "castle_suite/memory/memory.h"
 #include "castle_suite/messages/message_handler.h"
+// #include "algorithm/algorithm.h"
 
 #include <stdio.h>
 #include <time.h>
@@ -44,6 +45,11 @@ void overseer_runtime_method()
         // overseer_printf("received message_ID#%d successfully\n", message.message_id);
         print_message(&message);
         incr++;
+
+        // Sleep(500);
+        // int value = 5;
+        // gpu_add_10(&value);
+        // overseer_printf("%d\n", value);
     }
 }
 // register the process to the scheduler automatically before main() is called
