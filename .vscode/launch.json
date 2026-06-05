@@ -2,14 +2,27 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Run Project",
+            "name": "clang",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/bin/castlemania_interface.exe",
+            "program": "${workspaceFolder}/bin/castlemania.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
-            "preLaunchTask": "build-and-collect",
+            "preLaunchTask": "build-and-collect (clang)",
+            // "MIMode": "lldb",
+            // "miDebuggerPath": "D:/apps/LLVM_22.1.7/bin/lldb.exe",
+            "externalConsole": true
+        },
+        {
+            "name": "mingw",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/castlemania.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "build-and-collect (mingw)",
             "MIMode": "gdb",
             "externalConsole": true
         }

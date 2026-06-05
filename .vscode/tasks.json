@@ -12,15 +12,33 @@
   "problemMatcher": []
 },
     {
-      "label": "build-project",
+      "label": "build-project (mingw)",
       "type": "shell",
-      "command": "\"D:\\apps\\make\\bin\\make.exe\"",
+      "command": "D:/apps/make/bin/make.exe COMPILER=mingw",
       "problemMatcher": []
     },
     {
-      "label": "build-and-collect",
+      "label": "build-project (clang)",
+      "type": "shell",
+      "command": "D:/apps/make/bin/make.exe COMPILER=clang",
+      "problemMatcher": []
+    },
+    {
+      "label": "build-and-collect (mingw)",
       "dependsOn": [
-        "build-project",
+        "build-project (mingw)",
+        "move-o-files-to-bin"
+      ],
+      "dependsOrder": "sequence",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "build-and-collect (clang)",
+      "dependsOn": [
+        "build-project (clang)",
         "move-o-files-to-bin"
       ],
       "dependsOrder": "sequence",

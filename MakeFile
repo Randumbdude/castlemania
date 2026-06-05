@@ -1,41 +1,70 @@
-# Compilers
-CC  = gcc
-CXX = g++
+# ========================================
+# Compiler Selection
+# ========================================
 
+COMPILER ?= clang
+
+ifeq ($(COMPILER),mingw)
+	CC  = gcc
+	CXX = g++
+else ifeq ($(COMPILER),clang)
+	CC  = D:/apps/LLVM_22.1.7/bin/clang.exe
+	CXX = D:/apps/LLVM_22.1.7/bin/clang++.exe
+else
+	$(error Unknown compiler "$(COMPILER)". Use clang or mingw)
+endif
+
+# ========================================
 # Output
-OUT = bin/castlemania_interface.exe
+# ========================================
 
+OUT = bin/castlemania.exe
+
+# ========================================
 # Paths
-INCLUDES = -I./include -I./src
-# LIBS = -L./lib -lglfw3dll -lopengl32 -lgdi32
+# ========================================
 
-# Find sources
+INCLUDES = -I./include -I./src
+LIBS = -L./libs
+
+# ========================================
+# Sources
+# ========================================
+
 C_SRC := $(shell powershell -Command "Get-ChildItem -Recurse src -Include *.c | %% { $$_.FullName }")
 CPP_SRC := $(shell powershell -Command "Get-ChildItem -Recurse src -Include *.cpp | %% { $$_.FullName }")
 
-# Add glad manually (C file)
-# C_SRC += include/glad/glad.c
+# ========================================
+# Objects
+# ========================================
 
-# Object files
 C_OBJ := $(C_SRC:.c=.o)
 CPP_OBJ := $(CPP_SRC:.cpp=.o)
 
-# Default target
+# ========================================
+# Build
+# ========================================
+
 all: $(OUT)
 
-# Link everything with g++
 $(OUT): $(C_OBJ) $(CPP_OBJ)
 	$(CXX) -g $(C_OBJ) $(CPP_OBJ) $(LIBS) -o $(OUT)
 
-# Compile C files
 %.o: %.c
 	$(CC) -c -g $(INCLUDES) $< -o $@
 
-# Compile C++ files
 %.o: %.cpp
 	$(CXX) -c -g $(INCLUDES) $< -o $@
 
-# Clean
+# ========================================
+# Utilities
+# ========================================
+
 clean:
 	del /S *.o 2>nul
 	del $(OUT) 2>nul
+
+info:
+	@echo Compiler: $(COMPILER)
+	@echo CC = $(CC)
+	@echo CXX = $(CXX)

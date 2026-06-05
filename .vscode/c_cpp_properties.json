@@ -1,10 +1,9 @@
 {
     "configurations": [
         {
-            "name": "Win32",
+            "name": "MinGW",
             "includePath": [
                 "${workspaceFolder}/**",
-                // "${workspaceFolder}/include",
                 "D:/My Program Files/mingw64/lib/gcc/x86_64-w64-mingw32/13.2.0/include/**",
                 "D:/My Program Files/mingw64/x86_64-w64-mingw32/include/**",
                 "D:/My Program Files/mingw64/include/**"
@@ -15,9 +14,25 @@
                 "_UNICODE"
             ],
             "compilerPath": "D:/My Program Files/mingw64/bin/g++.exe",
-            "cStandard": "c11",
-            "cppStandard": "c++17",
-            "intelliSenseMode": "gcc-x64"
+            "cStandard": "c17",
+            "cppStandard": "c++23",
+            "intelliSenseMode": "windows-gcc-x64"
+        },
+        {
+            "name": "Clang",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "D:/apps/LLVM_22.1.7/lib/clang/22/include/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "D:/apps/LLVM_22.1.7/bin/clang++.exe",
+            "cStandard": "c23",
+            "cppStandard": "c++23",
+            "intelliSenseMode": "windows-clang-x64"
         }
     ],
     "version": 4
