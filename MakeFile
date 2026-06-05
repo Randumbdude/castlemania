@@ -1,6 +1,6 @@
 # Compilers
-CC  = "D:/My Program Files/mingw64/bin/gcc.exe"
-CXX = "D:/My Program Files/mingw64/bin/g++.exe"
+CC  = gcc
+CXX = g++
 
 # Output
 OUT = bin/castlemania_interface.exe

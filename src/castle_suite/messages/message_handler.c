@@ -79,14 +79,18 @@ void print_message(const message_t *message)
 
 uint64_t send_message(message_t *message)
 {
+    // set messages message_id tag and increment for the next one
     message->message_id = next_message_id++;
+    // this is a biggin.
     message_box[message->reciever_id][(process_indexes[message->reciever_id]->unread_messages >= MAX_MESSAGES) ? 0 : process_indexes[message->reciever_id]->unread_messages++] = *message;
+    // check if the message box is full if so = 0;
     if ((process_indexes[message->reciever_id]->unread_messages >= MAX_MESSAGES))
     {
         process_indexes[message->reciever_id]->unread_messages = 0;
     }
+    // print the message
     message_handler_printf("message sent with message_ID#%" PRIu64 "\n", message->message_id);
-
+    // return.
     return message->message_id;
 }
 
