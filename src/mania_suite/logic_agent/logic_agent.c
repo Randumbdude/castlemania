@@ -1,7 +1,7 @@
 #include "logic_agent.h"
 #include "main.h"
 
-#include "memory.h"
+#include "memory_.h"
 #include "message_handler.h"
 
 #include <stdio.h>
