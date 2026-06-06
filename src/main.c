@@ -22,6 +22,6 @@ int main()
     scheduler_initialize();
 
     printf("Press any key to exit the program...");
-    if (getch())
+    if (_getch())
         return 0;
 }

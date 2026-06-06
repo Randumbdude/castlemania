@@ -13,10 +13,17 @@ uint8_t logic_agent_id;
 
 int logic_printf(const char *format, ...)
 {
-    current_time = time(NULL);               // get current time
-    struct tm *t = localtime(&current_time); // convert to local time
+    current_time = time(NULL); // get current time
+    struct tm t;
+
+#ifdef _WIN32
+    localtime_s(&t, &current_time);
+#else
+    localtime_r(&current_time, &t);
+#endif
+
     printf(" - logic_agent@%02d:%02d:%02d> ",
-           t->tm_hour, t->tm_min, t->tm_sec);
+           t.tm_hour, t.tm_min, t.tm_sec);
 
     va_list args;
     va_start(args, format);

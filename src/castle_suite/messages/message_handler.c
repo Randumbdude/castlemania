@@ -12,11 +12,18 @@ uint64_t next_message_id = 0;
 
 int message_handler_printf(const char *format, ...)
 {
-    current_time = time(NULL);               // get current time
-    struct tm *t = localtime(&current_time); // convert to local time
+    current_time = time(NULL); // get current time
+
+    struct tm t;
+
+#ifdef _WIN32
+    localtime_s(&t, &current_time);
+#else
+    localtime_r(&current_time, &t);
+#endif
 
     printf(" = message_handler@%02d:%02d:%02d> ",
-           t->tm_hour, t->tm_min, t->tm_sec);
+           t.tm_hour, t.tm_min, t.tm_sec);
 
     va_list args;
     va_start(args, format);
@@ -25,7 +32,7 @@ int message_handler_printf(const char *format, ...)
     return result;
 }
 
-#define MAX_MESSAGES 256
+#define MAX_MESSAGES 255
 message_t message_box[255][MAX_MESSAGES]; // 255 processs (max uint8_t value) with 256 messages each, should be more than enough for now
 process_t *process_indexes[255];
 

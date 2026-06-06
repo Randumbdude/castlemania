@@ -13,17 +13,6 @@
             // "MIMode": "lldb",
             // "miDebuggerPath": "D:/apps/LLVM_22.1.7/bin/lldb.exe",
             "externalConsole": true
-        },
-        {
-            "name": "clean",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "preLaunchTask": "clean-files",
-            "externalConsole": false
         }
     ]
 }
