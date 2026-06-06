@@ -16,7 +16,7 @@
 
 // C includes
 #include "main.h"
-#include "castle_suite/messages/message_handler.h"
+#include "message_handler.h"
 
 int scheduler_printf(const char *format, ...)
 {

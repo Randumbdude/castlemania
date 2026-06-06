@@ -1,39 +1,31 @@
 {
   "version": "2.0.0",
   "tasks": [
-{
-  "label": "move-o-files-to-bin",
-  "type": "shell",
-  "command": "powershell",
-  "args": [
-    "-Command",
-    "if (!(Test-Path bin)) { New-Item -ItemType Directory bin | Out-Null }; Get-ChildItem -Recurse -Filter *.o | ForEach-Object { Move-Item $_.FullName bin -Force }"
-  ],
-  "problemMatcher": []
-},
     {
-      "label": "build-project (mingw)",
+      "label": "move-o-files-to-bin",
       "type": "shell",
-      "command": "D:/apps/make/bin/make.exe COMPILER=mingw",
+      "command": "powershell",
+      "args": [
+        "-Command",
+        "if (!(Test-Path bin)) { New-Item -ItemType Directory bin | Out-Null }; Get-ChildItem -Recurse -Filter *.o | ForEach-Object { Move-Item $_.FullName bin -Force }"
+      ],
       "problemMatcher": []
+    },
+    {
+    "label": "clean-files",
+    "type": "shell",
+    "command": "powershell",
+    "args": [
+        "-Command",
+        "Get-ChildItem -Recurse -Include *.o,*.obj,*.exe,*.pdb,*.ilk,*.lib,*.exp -File | Remove-Item -Force -ErrorAction SilentlyContinue"
+    ],
+    "problemMatcher": []
     },
     {
       "label": "build-project (clang)",
       "type": "shell",
-      "command": "D:/apps/make/bin/make.exe COMPILER=clang",
+      "command": "make",
       "problemMatcher": []
-    },
-    {
-      "label": "build-and-collect (mingw)",
-      "dependsOn": [
-        "build-project (mingw)",
-        "move-o-files-to-bin"
-      ],
-      "dependsOrder": "sequence",
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
     },
     {
       "label": "build-and-collect (clang)",

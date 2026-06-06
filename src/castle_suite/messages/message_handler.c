@@ -6,7 +6,7 @@
 #include <windows.h>
 
 #include "main.h"
-#include "castle_suite/scheduler.hpp"
+#include "scheduler.hpp"
 
 uint64_t next_message_id = 0;
 

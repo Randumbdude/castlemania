@@ -1,8 +1,8 @@
 
 #include "overseer.h"
 #include "main.h"
-#include "castle_suite/memory/memory.h"
-#include "castle_suite/messages/message_handler.h"
+#include "memory.h"
+#include "message_handler.h"
 // #include "algorithm/algorithm.h"
 
 #include <stdio.h>

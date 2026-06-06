@@ -1,5 +1,5 @@
 #pragma once
-#include "castle_suite/scheduler.hpp"
+#include "scheduler.hpp"
 #ifdef __cplusplus
 extern "C"
 {

@@ -4,11 +4,11 @@
 #include <time.h>
 #include <windows.h>
 
-#include "castle_suite/overseer/overseer.h"
-#include "castle_suite/messages/message_handler.h"
-#include "mania_suite/logic_agent/logic_agent.h"
+#include "overseer.h"
+#include "message_handler.h"
+#include "logic_agent.h"
 
-#include "castle_suite/scheduler.hpp"
+#include "scheduler.hpp"
 
 time_t current_time;
 

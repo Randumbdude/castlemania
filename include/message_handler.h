@@ -4,8 +4,8 @@ extern "C"
 {
 #endif
 #include <stdint.h>
-#include "game_interface/action_interface/action.h"
-#include "castle_suite/scheduler.hpp"
+#include "action.h"
+#include "scheduler.hpp"
 
     /**
      * @struct message_t

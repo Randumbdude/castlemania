@@ -15,16 +15,15 @@
             "externalConsole": true
         },
         {
-            "name": "mingw",
+            "name": "clean",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/bin/castlemania.exe",
+            "program": "${workspaceFolder}",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
-            "preLaunchTask": "build-and-collect (mingw)",
-            "MIMode": "gdb",
-            "externalConsole": true
+            "preLaunchTask": "clean-files",
+            "externalConsole": false
         }
     ]
 }
