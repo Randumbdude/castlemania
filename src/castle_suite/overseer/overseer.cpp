@@ -65,7 +65,7 @@ int test()
     overseer_printf("Running GPU matrix multiplication...\n");
 
     auto t1 = std::chrono::high_resolution_clock::now();
-    matrix C = A * B;
+    matrix C = A * B; // (A * B) = C
     auto t2 = std::chrono::high_resolution_clock::now();
 
     double ms = std::chrono::duration<double, std::milli>(t2 - t1).count();

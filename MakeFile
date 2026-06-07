@@ -1,3 +1,4 @@
+CC := clang
 CXX := clang++
 NVCC := nvcc -ccbin "D:\Program Files\VisualStudio\VC\Tools\MSVC\14.51.36231\bin\Hostx64\x64"
 
@@ -5,23 +6,29 @@ INCLUDES := \
 	-I./include \
 	-I./libs
 
+CCFLAGS := -g $(INCLUDES)
 CXXFLAGS := -g $(INCLUDES)
 NVCCFLAGS := -Xcompiler "/W3" -g $(INCLUDES)
 
 TARGET := bin/castlemania.exe
 
+C_SOURCES := $(shell powershell -NoProfile -Command "Get-ChildItem src -Recurse -Filter *.c | %% { $$_.FullName }")
 CPP_SOURCES := $(shell powershell -NoProfile -Command "Get-ChildItem src -Recurse -Filter *.cpp | %% { $$_.FullName }")
 CU_SOURCES := $(shell powershell -NoProfile -Command "Get-ChildItem src -Recurse -Filter *.cu | %% { $$_.FullName }")
 
+C_OBJECTS := $(C_SOURCES:.c=.obj)
 CPP_OBJECTS := $(CPP_SOURCES:.cpp=.obj)
 CU_OBJECTS := $(CU_SOURCES:.cu=.obj)
 
-OBJECTS := $(CPP_OBJECTS) $(CU_OBJECTS)
+OBJECTS := $(C_OBJECTS) $(CPP_OBJECTS) $(CU_OBJECTS)
 
 all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
 	$(NVCC) $(OBJECTS) -o $@ 
+
+%.obj: %.c
+	$(CC) $(CCFLAGS) -c $< -o $@
 
 %.obj: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
