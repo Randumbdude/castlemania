@@ -333,7 +333,7 @@ matrix matrix::operator+(const matrix &other) const
         throw std::runtime_error(cudaGetErrorString(err));
     }
 
-    // cudaDeviceSynchronize();
+    cudaDeviceSynchronize();
 
     return result;
 }
@@ -362,7 +362,7 @@ matrix matrix::operator-(const matrix &other) const
         throw std::runtime_error(cudaGetErrorString(err));
     }
 
-    // cudaDeviceSynchronize();
+    cudaDeviceSynchronize();
 
     return result;
 }
@@ -388,7 +388,7 @@ matrix matrix::operator*(double scalar) const
         throw std::runtime_error(cudaGetErrorString(err));
     }
 
-    // cudaDeviceSynchronize();
+    cudaDeviceSynchronize();
 
     return result;
 }
@@ -420,7 +420,7 @@ matrix matrix::operator*(const matrix &other) const
         throw std::runtime_error(cudaGetErrorString(err));
     }
 
-    // cudaDeviceSynchronize();
+    cudaDeviceSynchronize();
 
     return result;
 }
@@ -449,7 +449,7 @@ matrix matrix::hadamard(const matrix &other) const
         throw std::runtime_error(cudaGetErrorString(err));
     }
 
-    // cudaDeviceSynchronize();
+    cudaDeviceSynchronize();
 
     return result;
 }
@@ -476,7 +476,7 @@ matrix matrix::transpose() const
         throw std::runtime_error(cudaGetErrorString(err));
     }
 
-    // cudaDeviceSynchronize();
+    cudaDeviceSynchronize();
 
     return result;
 }
@@ -503,7 +503,7 @@ matrix matrix::sigmoid() const
         throw std::runtime_error(cudaGetErrorString(err));
     }
 
-    // cudaDeviceSynchronize();
+    cudaDeviceSynchronize();
 
     return result;
 }
@@ -530,7 +530,7 @@ matrix matrix::sigmoid_derivative() const
         throw std::runtime_error(cudaGetErrorString(err));
     }
 
-    // cudaDeviceSynchronize();
+    cudaDeviceSynchronize();
 
     return result;
 }
@@ -557,7 +557,7 @@ matrix matrix::relu() const
         throw std::runtime_error(cudaGetErrorString(err));
     }
 
-    // cudaDeviceSynchronize();
+    cudaDeviceSynchronize();
 
     return result;
 }
