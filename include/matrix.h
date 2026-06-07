@@ -43,7 +43,6 @@ public:
 
     matrix hadamard(const matrix &other) const;
     matrix transpose() const;
-
     matrix sigmoid() const;
     matrix sigmoid_derivative() const;
     matrix relu() const;

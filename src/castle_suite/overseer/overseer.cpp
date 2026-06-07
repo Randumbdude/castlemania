@@ -5,6 +5,7 @@
 #include "message_handler.h"
 // #include "algorithm/algorithm.h"
 #include "matrix.h"
+#include "__matrix_.h"
 
 #include <stdio.h>
 #include <time.h>
@@ -43,11 +44,10 @@ process_t overseer_process = {
     .runtime_method = (void *)overseer_runtime_method,
     .is_running = 1};
 
-uint8_t incr = 0;
-
-int test()
+#define TEST 1024
+int test_gpu()
 {
-    const int N = 1024;
+    const int N = TEST;
 
     overseer_printf("Allocating matrices %dx%d...\n", N, N);
 
@@ -59,37 +59,57 @@ int test()
         for (int c = 0; c < N; c++)
         {
             A.set(r, c, r + c);
-            B.set(r, c, (r * c) % 1000);
+            B.set(r, c, r + c);
+            // B.set(r, c, (r * c) % 1000);
         }
 
     overseer_printf("Running GPU matrix multiplication...\n");
 
     auto t1 = std::chrono::high_resolution_clock::now();
+
     matrix C = A * B; // (A * B) = C
+
     auto t2 = std::chrono::high_resolution_clock::now();
 
     double ms = std::chrono::duration<double, std::milli>(t2 - t1).count();
-    overseer_printf("GPU matmul completed in %.3f ms\n", ms);
+    overseer_printf("GPU matmul completed in %.3f seconds\n\n", ms / 1000);
 
-    overseer_printf("Running Hadamard product...\n");
-    matrix H = A.hadamard(B);
+    return 0;
+}
+int test_cpu()
+{
+    const int N = TEST;
 
-    overseer_printf("Running sigmoid...\n");
-    matrix S = A.sigmoid();
+    overseer_printf("Allocating matrices %dx%d...\n", N, N);
 
-    overseer_printf("Running transpose...\n");
-    matrix T = A.transpose();
+    __matrix_ A(N, N);
+    __matrix_ B(N, N);
 
-    overseer_printf("\nSample values:\n");
-    overseer_printf("C(0,0) = %f\n", C.get(0, 0));
-    overseer_printf("H(10,10) = %f\n", H.get(10, 10));
-    overseer_printf("S(500,500) = %f\n", S.get(500, 500));
-    overseer_printf("T(0,10) = %f\n", T.get(0, 10));
+    // Fill matrices with simple values
+    for (int r = 0; r < N; r++)
+        for (int c = 0; c < N; c++)
+        {
+            A.set(r, c, r + c);
+            B.set(r, c, r + c);
+            // B.set(r, c, (r * c) % 1000);
+        }
+
+    overseer_printf("Running CPU matrix multiplication...\n");
+
+    auto t1 = std::chrono::high_resolution_clock::now();
+
+    __matrix_ C = A * B; // (A * B) = C
+
+    auto t2 = std::chrono::high_resolution_clock::now();
+
+    double ms = std::chrono::duration<double, std::milli>(t2 - t1).count();
+    overseer_printf("CPU matmul completed in %.3f seconds\n\n", ms / 1000);
 
     return 0;
 }
 
 // the runtime method that will be looped by the scheduler
+uint8_t incr = 0;
 void overseer_runtime_method()
 {
     if ((overseer_process.unread_messages != 0) && (incr == 0))
@@ -104,7 +124,13 @@ void overseer_runtime_method()
         // int value = 5;
         // gpu_add_10(&value);
         // overseer_printf("%d\n", value);
-        test();
+        test_gpu();
+
+        Sleep(500);
+        // int value = 5;
+        // cpu_add_10(&value);
+        // overseer_printf("%d\n", value);
+        test_cpu();
     }
 }
 // register the process to the scheduler automatically before main() is called
