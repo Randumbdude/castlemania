@@ -8,7 +8,7 @@
 #include "message_handler.h"
 #include "logic_agent.h"
 
-#include "scheduler.hpp"
+#include "scheduler.h"
 
 time_t current_time;
 

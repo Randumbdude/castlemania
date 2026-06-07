@@ -4,11 +4,15 @@
 #include "memory.h"
 #include "message_handler.h"
 // #include "algorithm/algorithm.h"
+#include "matrix.h"
 
 #include <stdio.h>
 #include <time.h>
 #include <stdarg.h>
 #include <windows.h>
+
+#include <chrono>
+#include <iostream>
 
 int overseer_printf(const char *format, ...)
 {
@@ -41,6 +45,50 @@ process_t overseer_process = {
 
 uint8_t incr = 0;
 
+int test()
+{
+    const int N = 1024;
+
+    overseer_printf("Allocating matrices %dx%d...\n", N, N);
+
+    matrix A(N, N);
+    matrix B(N, N);
+
+    // Fill matrices with simple values
+    for (int r = 0; r < N; r++)
+        for (int c = 0; c < N; c++)
+        {
+            A.set(r, c, r + c);
+            B.set(r, c, (r * c) % 1000);
+        }
+
+    overseer_printf("Running GPU matrix multiplication...\n");
+
+    auto t1 = std::chrono::high_resolution_clock::now();
+    matrix C = A * B;
+    auto t2 = std::chrono::high_resolution_clock::now();
+
+    double ms = std::chrono::duration<double, std::milli>(t2 - t1).count();
+    overseer_printf("GPU matmul completed in %.3f ms\n", ms);
+
+    overseer_printf("Running Hadamard product...\n");
+    matrix H = A.hadamard(B);
+
+    overseer_printf("Running sigmoid...\n");
+    matrix S = A.sigmoid();
+
+    overseer_printf("Running transpose...\n");
+    matrix T = A.transpose();
+
+    overseer_printf("\nSample values:\n");
+    overseer_printf("C(0,0) = %f\n", C.get(0, 0));
+    overseer_printf("H(10,10) = %f\n", H.get(10, 10));
+    overseer_printf("S(500,500) = %f\n", S.get(500, 500));
+    overseer_printf("T(0,10) = %f\n", T.get(0, 10));
+
+    return 0;
+}
+
 // the runtime method that will be looped by the scheduler
 void overseer_runtime_method()
 {
@@ -52,10 +100,11 @@ void overseer_runtime_method()
         print_message(&message);
         incr++;
 
-        // Sleep(500);
+        Sleep(500);
         // int value = 5;
         // gpu_add_10(&value);
         // overseer_printf("%d\n", value);
+        test();
     }
 }
 // register the process to the scheduler automatically before main() is called

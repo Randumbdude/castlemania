@@ -1,5 +1,5 @@
 #pragma once
-#include "scheduler.hpp"
+#include "scheduler.h"
 #ifdef __cplusplus
 extern "C"
 {

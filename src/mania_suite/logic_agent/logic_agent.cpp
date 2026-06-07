@@ -49,7 +49,6 @@ void logic_agent_runtime_method()
         message_t message = {
             .sender_process = logic_agent_process,
             .reciever_id = 0,
-            .message_id = -1,
             .action_proposal = {
                 .type = dig,
                 .x = (WIDTH / 2),

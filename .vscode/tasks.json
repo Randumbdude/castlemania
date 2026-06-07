@@ -12,14 +12,11 @@
       "problemMatcher": []
     },
     {
-    "label": "clean-files",
-    "type": "shell",
-    "command": "powershell",
-    "args": [
-        "-Command",
-        "Get-ChildItem -Recurse -Include *.o,*.obj,*.exe,*.pdb,*.ilk,*.lib,*.exp -File | Remove-Item -Force -ErrorAction SilentlyContinue"
-    ],
-    "problemMatcher": []
+      "label": "clean",
+      "type": "shell",
+      "command": "make clean",
+      "args": [],
+      "problemMatcher": []
     },
     {
       "label": "build-project (clang)",

@@ -6,7 +6,7 @@
 #include <windows.h>
 
 #include "main.h"
-#include "scheduler.hpp"
+#include "scheduler.h"
 
 uint64_t next_message_id = 0;
 

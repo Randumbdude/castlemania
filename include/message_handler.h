@@ -5,7 +5,7 @@ extern "C"
 #endif
 #include <stdint.h>
 #include "action.h"
-#include "scheduler.hpp"
+#include "scheduler.h"
 
     /**
      * @struct message_t
