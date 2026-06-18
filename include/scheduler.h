@@ -5,6 +5,7 @@ extern "C"
 {
 #endif
 #include <stdint.h>
+    int scheduler_printf(const char *format, ...);
     void scheduler_initialize(void);
     typedef struct
     {
@@ -15,7 +16,7 @@ extern "C"
         uint8_t unread_messages;
     } process_t;
     uint8_t register_to_scheduler(process_t *process_to_schedule);
-    int scheduler_printf(const char *format, ...);
+    uint8_t make_process_idle(process_t *process);
 #ifdef __cplusplus
 }
 #endif

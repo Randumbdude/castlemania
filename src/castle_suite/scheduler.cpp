@@ -70,6 +70,11 @@ void scheduler_runtime_method(void)
                 // scheduler_printf("process_ID#%d executed successfully\n", i);
             } });
         }
+        else if (scheduled_processes[i].is_running == 0)
+        {
+            scheduler_printf("process \"%s\" is idle\n", scheduled_processes[i].process_name);
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
     }
 
     for (auto &thread : threads)
@@ -121,4 +126,10 @@ extern "C"
 
         scheduler_runtime_thread.join();
     }
+}
+
+uint8_t make_process_idle(process_t *process)
+{
+    process->is_running = 0;
+    return 0;
 }

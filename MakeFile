@@ -4,7 +4,11 @@ NVCC := nvcc -ccbin "D:\Program Files\VisualStudio\VC\Tools\MSVC\14.51.36231\bin
 
 INCLUDES := \
 	-I./include \
-	-I./libs
+	-I./libs/matrices/inc
+
+SOURCE_DIRS := \
+	src, \
+	libs/matrices/src 
 
 CCFLAGS := -g $(INCLUDES)
 CXXFLAGS := -g $(INCLUDES)
@@ -12,9 +16,9 @@ NVCCFLAGS := -Xcompiler "/W3" -g $(INCLUDES)
 
 TARGET := bin/castlemania.exe
 
-C_SOURCES := $(shell powershell -NoProfile -Command "Get-ChildItem src -Recurse -Filter *.c | %% { $$_.FullName }")
-CPP_SOURCES := $(shell powershell -NoProfile -Command "Get-ChildItem src -Recurse -Filter *.cpp | %% { $$_.FullName }")
-CU_SOURCES := $(shell powershell -NoProfile -Command "Get-ChildItem src -Recurse -Filter *.cu | %% { $$_.FullName }")
+C_SOURCES := $(shell powershell -NoProfile -Command "Get-ChildItem $(SOURCE_DIRS) -Recurse -Filter *.c | ForEach-Object { $$_.FullName }")
+CPP_SOURCES := $(shell powershell -NoProfile -Command "Get-ChildItem $(SOURCE_DIRS) -Recurse -Filter *.cpp | ForEach-Object { $$_.FullName }")
+CU_SOURCES := $(shell powershell -NoProfile -Command "Get-ChildItem $(SOURCE_DIRS) -Recurse -Filter *.cu | ForEach-Object { $$_.FullName }")
 
 C_OBJECTS := $(C_SOURCES:.c=.obj)
 CPP_OBJECTS := $(CPP_SOURCES:.cpp=.obj)

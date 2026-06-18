@@ -3,7 +3,7 @@
 #include "main.h"
 #include "memory.h"
 #include "message_handler.h"
-// #include "algorithm/algorithm.h"
+
 #include "matrix.h"
 #include "__matrix_.h"
 
@@ -14,6 +14,7 @@
 
 #include <chrono>
 #include <iostream>
+#include <thread>
 
 int overseer_printf(const char *format, ...)
 {
@@ -44,7 +45,7 @@ process_t overseer_process = {
     .runtime_method = (void *)overseer_runtime_method,
     .is_running = 1};
 
-#define TEST 1024
+#define TEST 512
 int test_gpu()
 {
     const int N = TEST;
@@ -118,7 +119,6 @@ void overseer_runtime_method()
         message_t message = get_message(overseer_process, 0);
         // overseer_printf("received message_ID#%d successfully\n", message.message_id);
         print_message(&message);
-        incr++;
 
         Sleep(500);
         // int value = 5;
@@ -131,6 +131,8 @@ void overseer_runtime_method()
         // cpu_add_10(&value);
         // overseer_printf("%d\n", value);
         test_cpu();
+
+        incr++;
     }
 }
 // register the process to the scheduler automatically before main() is called
