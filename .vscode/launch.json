@@ -5,11 +5,11 @@
             "name": "clang",
             "type": "lldb",
             "request": "launch",
-            "program": "${workspaceFolder}/bin/castlemania.exe",
+            "program": "${workspaceFolder}/bin/mksr.exe",
             "args": [],
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "build-and-collect (clang)",
-            "postDebugTask": "clean",
+            // "postDebugTask": "clean",
             "console": "externalTerminal"
         }
     ]

@@ -43,10 +43,12 @@ public:
 
     matrix hadamard(const matrix &other) const;
     matrix transpose() const;
-
     matrix sigmoid() const;
     matrix sigmoid_derivative() const;
     matrix relu() const;
+    double sum_of_squares() const;
+    void randomize();
+    void print() const;
 };
 
 struct DataPoint

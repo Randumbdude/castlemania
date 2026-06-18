@@ -3,15 +3,17 @@ NVCC := nvcc -ccbin "D:\Program Files\VisualStudio\VC\Tools\MSVC\14.51.36231\bin
 
 INCLUDES := \
 	-I./include \
-	-I./libs
+	-I./libs/log_dump/inc \
+	-I./libs/matrices/inc \
+	-I./libs/hot_loader/inc
 
-CXXFLAGS := -g $(INCLUDES)
-NVCCFLAGS := -Xcompiler "/W3" -g $(INCLUDES)
+CXXFLAGS := -std=c++17 -g $(INCLUDES)
+NVCCFLAGS := -g $(INCLUDES)
 
-TARGET := bin/castlemania.exe
+TARGET := bin/mksr.exe
 
-CPP_SOURCES := $(shell powershell -NoProfile -Command "Get-ChildItem src -Recurse -Filter *.cpp | %% { $$_.FullName }")
-CU_SOURCES := $(shell powershell -NoProfile -Command "Get-ChildItem src -Recurse -Filter *.cu | %% { $$_.FullName }")
+CPP_SOURCES := $(shell powershell -NoProfile -Command "Get-ChildItem . -Recurse -Filter *.cpp | ForEach-Object { $$_.FullName }")
+CU_SOURCES := $(shell powershell -NoProfile -Command "Get-ChildItem . -Recurse -Filter *.cu | ForEach-Object { $$_.FullName }")
 
 CPP_OBJECTS := $(CPP_SOURCES:.cpp=.obj)
 CU_OBJECTS := $(CU_SOURCES:.cu=.obj)
@@ -21,13 +23,13 @@ OBJECTS := $(CPP_OBJECTS) $(CU_OBJECTS)
 all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
-	$(NVCC) $(OBJECTS) -o $@ 
+	$(NVCC) -o $@ $(OBJECTS)
 
 %.obj: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c "$<" -o "$@"
 
 %.obj: %.cu
-	$(NVCC) $(NVCCFLAGS) -c $< -o $@
+	$(NVCC) $(NVCCFLAGS) -c "$<" -o "$@"
 
 clean:
 	del /S /Q *.obj 2>nul

@@ -91,30 +91,21 @@ matrix &matrix::operator=(const matrix &other)
     if (this == &other)
         return *this;
 
-    if (data)
-        cudaFree(data);
+    size_t bytes = other.rows * other.cols * sizeof(double);
 
-    rows = other.rows;
-    cols = other.cols;
-
-    size_t bytes = rows * cols * sizeof(double);
-
-    // cudaMalloc(&data, bytes);
-    cudaError_t err =
-        cudaMallocManaged(&data, bytes);
-
-    if (err != cudaSuccess)
+    // Only reallocate if shape changed
+    if (rows != other.rows || cols != other.cols)
     {
-        throw std::runtime_error(
-            cudaGetErrorString(err));
+        if (data)
+            cudaFree(data);
+
+        rows = other.rows;
+        cols = other.cols;
+
+        cudaMallocManaged(&data, bytes);
     }
 
-    cudaMemcpy(
-        data,
-        other.data,
-        bytes,
-        cudaMemcpyDefault);
-
+    cudaMemcpy(data, other.data, bytes, cudaMemcpyDefault);
     return *this;
 }
 
@@ -303,6 +294,20 @@ __global__ void relu_kernel(
             input[idx] > 0.0
                 ? input[idx]
                 : 0.0;
+    }
+}
+
+__global__ void sum_of_squares_kernel(
+    const double *input,
+    double *result,
+    int size)
+{
+    int idx =
+        blockIdx.x * blockDim.x + threadIdx.x;
+
+    if (idx < size)
+    {
+        atomicAdd(result, input[idx] * input[idx]);
     }
 }
 
@@ -560,6 +565,66 @@ matrix matrix::relu() const
     cudaDeviceSynchronize();
 
     return result;
+}
+
+double matrix::sum_of_squares() const
+{
+    int size = rows * cols;
+
+    double *gpu_result;
+
+    cudaMallocManaged(&gpu_result, sizeof(double));
+
+    *gpu_result = 0.0;
+
+    int threads = GPU_THREADS;
+    int blocks = (size + threads - 1) / threads;
+
+    sum_of_squares_kernel<<<blocks, threads>>>(
+        data,
+        gpu_result,
+        size);
+
+    cudaError_t err = cudaGetLastError();
+    if (err != cudaSuccess)
+    {
+        cudaFree(gpu_result);
+        throw std::runtime_error(cudaGetErrorString(err));
+    }
+
+    cudaDeviceSynchronize();
+
+    double result = *gpu_result;
+
+    cudaFree(gpu_result);
+
+    return result;
+}
+
+void matrix::randomize()
+{
+    for (int r = 0; r < getRows(); r++) // randomize weights
+    {
+        for (int c = 0; c < getCols(); c++)
+        {
+            set(r, c, ((double)rand() / RAND_MAX) * 2.0 - 1.0);
+        }
+    }
+}
+
+void matrix::print() const
+{
+    cudaDeviceSynchronize(); // ensure GPU ops are finished
+
+    for (int r = 0; r < rows; r++)
+    {
+        std::cout << "[ ";
+        for (int c = 0; c < cols; c++)
+        {
+            std::cout << data[r * cols + c] << " ";
+        }
+        std::cout << "]\n";
+    }
 }
 
 //

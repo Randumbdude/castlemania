@@ -9,15 +9,19 @@
 #include "logic_agent.h"
 
 #include "scheduler.h"
+#include "hot_loader.h"
 
 time_t current_time;
 
 int main()
 {
+    initialize_hot_loader();
     // DWORD tid = GetCurrentThreadId();
     // printf("'main' running on thread ID: %lu (0x%lx)\n",
     //        (unsigned long)tid,
     //        (unsigned long)tid);
+    while (1)
+        ;
 
     scheduler_initialize();
 
