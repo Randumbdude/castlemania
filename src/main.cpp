@@ -20,8 +20,7 @@ int main()
     // printf("'main' running on thread ID: %lu (0x%lx)\n",
     //        (unsigned long)tid,
     //        (unsigned long)tid);
-    while (1)
-        ;
+    getchar();
 
     scheduler_initialize();
 
