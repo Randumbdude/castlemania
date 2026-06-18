@@ -7,7 +7,7 @@ namespace fs = std::filesystem;
 // global variable for the vector of current dlls loaded
 std::vector<loaded_dll_t> _hl_loaded_dlls;
 
-int initialize_hot_loader()
+int16_t initialize_hot_loader()
 {
 #if defined(_WIN32)
     std::cout << "Running on Windows." << std::endl;
@@ -49,7 +49,7 @@ int initialize_hot_loader()
             std::cout << _HL__E_MINOR_2.error_message << std::endl;
             FreeLibrary(dll);
         }
-        initialize_dll();
+        // initialize_dll(); // lol we dont wanna run them immediately maybe.
         // now that the dll has been loaded and initialized, we slap it in our list for later.
         loaded_dll_t _hl_ld_dll;
         _hl_ld_dll.dll = dll;
@@ -58,5 +58,14 @@ int initialize_hot_loader()
         _hl_loaded_dlls.push_back(_hl_ld_dll);
     }
     std::cout << std::endl;
+    return 0;
+}
+
+int16_t initialize_loaded_dlls()
+{
+    for (int i = 0; i < _hl_loaded_dlls.size(); i++)
+    {
+        _hl_loaded_dlls[i].initialize_dll();
+    }
     return 0;
 }

@@ -13,4 +13,5 @@ struct loaded_dll_t
     proc_dll_t initialize_dll;
 };
 
-int initialize_hot_loader();
+int16_t initialize_hot_loader();
+int16_t initialize_loaded_dlls();

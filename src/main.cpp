@@ -16,10 +16,9 @@ time_t current_time;
 int main()
 {
     initialize_hot_loader();
-    // DWORD tid = GetCurrentThreadId();
-    // printf("'main' running on thread ID: %lu (0x%lx)\n",
-    //        (unsigned long)tid,
-    //        (unsigned long)tid);
+
+    initialize_loaded_dlls();
+
     getchar();
 
     scheduler_initialize();
