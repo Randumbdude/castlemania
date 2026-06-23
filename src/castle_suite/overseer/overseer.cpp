@@ -108,7 +108,8 @@ void overseer_runtime_method()
     }
 }
 // register the process to the scheduler automatically before main() is called
-proc_hook void overseer_auto_register(void)
+// proc_hook
+void overseer_auto_register(void)
 {
     register_to_scheduler(&overseer_process);
     register_to_message_handler(&overseer_process);

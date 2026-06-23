@@ -12,8 +12,11 @@ NVCCFLAGS := -g $(INCLUDES)
 
 TARGET := bin/mksr.exe
 
-CPP_SOURCES := $(shell powershell -NoProfile -Command "Get-ChildItem . -Recurse -Filter *.cpp | ForEach-Object { $$_.FullName }")
-CU_SOURCES := $(shell powershell -NoProfile -Command "Get-ChildItem . -Recurse -Filter *.cu | ForEach-Object { $$_.FullName }")
+EXCLUDE_REGEX := $(shell powershell -NoProfile -Command "(Get-Content make_excludes) -join '|'")
+
+CPP_SOURCES := $(shell powershell -NoProfile -Command "Get-ChildItem . -Recurse -Filter *.cpp | Where-Object { $$_.FullName -notmatch '$(EXCLUDE_REGEX)' } | ForEach-Object { $$_.FullName }")
+
+CU_SOURCES := $(shell powershell -NoProfile -Command "Get-ChildItem . -Recurse -Filter *.cu | Where-Object { $$_.FullName -notmatch '$(EXCLUDE_REGEX)' } | ForEach-Object { $$_.FullName }")
 
 CPP_OBJECTS := $(CPP_SOURCES:.cpp=.obj)
 CU_OBJECTS := $(CU_SOURCES:.cu=.obj)

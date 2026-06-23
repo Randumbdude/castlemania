@@ -60,9 +60,11 @@ void logic_agent_runtime_method()
         incr_1++;
     }
 }
-// register the process to the scheduler automatically before main() is called
-proc_hook void logic_agent_auto_register(void)
+
+// special special function for dll, name is specific this is how it is found by the hot loader
+extern "C" __declspec(dllexport) int16_t _HL_DLL_INIT()
 {
     register_to_scheduler(&logic_agent_process);
     register_to_message_handler(&logic_agent_process);
+    return 0;
 }

@@ -1,46 +1,12 @@
 {
-    "folder-path-color.folders": [
+    "makefile.launchConfigurations": [
         {
-            "path": "src/castle_suite",
-            "color": "blue",
-            "symbol": "🏰",
-            "tooltip": "Castle Suite"
-        },
-        {
-            "path": "src/game_interface",
-            "color": "green",
-            "symbol": "🎮",
-            "tooltip": "Game Interface"
-        },
-        {
-            "path": "src/mania_suite",
-            "color": "red",
-            "symbol": "⚡",
-            "tooltip": "Mania Suite"
-        },
-        {
-            "path": "bin",
-            "color": "yellow",
-            "symbol": "📦",
-            "tooltip": "Binary Output"
-        },
-        {
-            "path": "include",
-            "color": "cyan",
-            "symbol": "📚",
-            "tooltip": "Libraries"
-        },
-        {
-            "path": "libs",
-            "color": "green",
-            "symbol": "📚",
-            "tooltip": "Libraries"
-        },
-        {
-            "path": "src",
-            "color": "magenta",
-            "symbol": "🍩",
-            "tooltip": "Libraries"
+            "cwd": "${workspaceFolder}",
+            "binaryPath": "${workspaceFolder}/bin/mksr.exe",
+            "binaryArgs": [
+                "--arg1",
+                "value1"
+            ]
         }
     ]
 }

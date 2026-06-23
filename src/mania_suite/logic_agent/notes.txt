@@ -1,0 +1,28 @@
+
+D:\source\castlemania\src\mania_suite\logic_agent>clang++ -g -I./../../../include -std=c++17 logic_agent.cpp -shared -o logic_agent.dll
+
+
+
+D:\source\castlemania\src\mania_suite\logic_agent>clang++ -g -I./../../../include -std=c++17 logic_agent.cpp -shared -o logic_agent.dll
+logic_agent.cpp:69:1: warning: non-void function does not return a value [-Wreturn-type]
+   69 | }
+      | ^
+1 warning generated.
+lld-link: error: undefined symbol: current_time
+>>> referenced by D:\source\castlemania\src\mania_suite\logic_agent\logic_agent.cpp:16
+>>>               D:\Riley\TMP\logic_agent-24676f.o:(logic_printf)
+>>> referenced by D:\source\castlemania\src\mania_suite\logic_agent\logic_agent.cpp:16
+>>>               D:\Riley\TMP\logic_agent-24676f.o:(logic_printf)
+
+lld-link: error: undefined symbol: send_message
+>>> referenced by D:\source\castlemania\src\mania_suite\logic_agent\logic_agent.cpp:58
+>>>               D:\Riley\TMP\logic_agent-24676f.o:(void __cdecl logic_agent_runtime_method(void))
+
+lld-link: error: undefined symbol: register_to_scheduler
+>>> referenced by D:\source\castlemania\src\mania_suite\logic_agent\logic_agent.cpp:67
+>>>               D:\Riley\TMP\logic_agent-24676f.o:(_HL_DLL_INIT)
+
+lld-link: error: undefined symbol: register_to_message_handler
+>>> referenced by D:\source\castlemania\src\mania_suite\logic_agent\logic_agent.cpp:68
+>>>               D:\Riley\TMP\logic_agent-24676f.o:(_HL_DLL_INIT)
+clang++: error: linker command failed with exit code 1 (use -v to see invocation)

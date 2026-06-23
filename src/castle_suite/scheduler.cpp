@@ -16,6 +16,7 @@
 
 // C includes
 #include "main.h"
+#include "hot_loader.h"
 #include "message_handler.h"
 
 int scheduler_printf(const char *format, ...)
@@ -111,6 +112,10 @@ extern "C"
     void scheduler_initialize(void)
     {
         scheduler_printf("finalizing...\n");
+
+        initialize_hot_loader();
+
+        initialize_loaded_dlls();
 
         std::thread scheduler_runtime_thread(scheduler_runtime_method);
 
