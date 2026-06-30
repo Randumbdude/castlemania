@@ -1,4 +1,4 @@
-#include "logic_agent.h"
+#include "agent.h"
 #include "main.h"
 
 #include "memory_.h"

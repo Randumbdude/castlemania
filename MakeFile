@@ -10,7 +10,7 @@ INCLUDES := \
 CXXFLAGS := -std=c++17 -g $(INCLUDES)
 NVCCFLAGS := -g $(INCLUDES)
 
-TARGET := bin/mksr.exe
+TARGET := "bin/mksr.exe"
 
 EXCLUDE_REGEX := $(shell powershell -NoProfile -Command "(Get-Content make_excludes) -join '|'")
 
