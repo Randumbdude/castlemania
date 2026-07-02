@@ -8,5 +8,35 @@
                 "value1"
             ]
         }
+    ],
+    "folder-color.pathColors": [
+        {
+            "folderPath": "src\\",
+            "color": "foldercolorizer.color_5fafd7"
+        },
+        {
+            "folderPath": "include\\",
+            "color": "foldercolorizer.color_5faf5f"
+        },
+        {
+            "folderPath": "libs\\",
+            "color": "foldercolorizer.color_875fff"
+        },
+        {
+            "folderPath": "bin\\",
+            "color": "foldercolorizer.color_ff0000"
+        },
+        {
+            "folderPath": "src\\castle_suite\\",
+            "color": "foldercolorizer.color_005fd7"
+        },
+        {
+            "folderPath": "src\\mania_suite\\",
+            "color": "foldercolorizer.color_ff0087"
+        },
+        {
+            "folderPath": "src\\net_krnl\\",
+            "color": "foldercolorizer.color_ffd700"
+        }
     ]
 }

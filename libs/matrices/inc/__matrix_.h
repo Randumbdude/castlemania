@@ -1,5 +1,6 @@
 #pragma once
 
+#include <initializer_list>
 #include <vector>
 
 class __matrix_

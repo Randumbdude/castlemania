@@ -1,12 +1,12 @@
 #include "message_handler.h"
+
 #include <stdio.h>
 #include <time.h>
 #include <stdarg.h>
 #include <inttypes.h>
 #include <windows.h>
 
-#include "main.h"
-#include "scheduler.h"
+#include "krnl.h"
 
 uint64_t next_message_id = 0;
 
@@ -117,7 +117,8 @@ void message_handler_runtime_method()
 }
 
 // register the process to the scheduler automatically before main() is called
-proc_hook void message_handler_auto_register(void)
+uint8_t message_handler_initialize(void)
 {
     register_to_scheduler(&message_handler_process);
+    return 0;
 }

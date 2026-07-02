@@ -1,6 +1,6 @@
 #include "agent.h"
-#include "main.h"
 
+#include "krnl.h"
 #include "memory_.h"
 #include "message_handler.h"
 

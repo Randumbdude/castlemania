@@ -1,9 +1,7 @@
-
 #include "overseer.h"
-#include "main.h"
-#include "memory.h"
+
+#include "krnl.h"
 #include "message_handler.h"
-// #include "algorithm/algorithm.h"
 #include "matrix.h"
 
 #include <stdio.h>
@@ -12,7 +10,6 @@
 #include <windows.h>
 
 #include <chrono>
-#include <iostream>
 
 int overseer_printf(const char *format, ...)
 {

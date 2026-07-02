@@ -1,11 +1,9 @@
 #include "scheduler.h"
 
 // C++ libs
-#include <iostream>
-#include <atomic>
-#include <thread>
-#include <chrono>
 #include <vector> // for event
+#include <stdexcept>
+#include <thread>
 
 // C libs
 #include <stdio.h>
@@ -15,9 +13,8 @@
 #include <windows.h>
 
 // C includes
-#include "main.h"
+#include "krnl.h"
 #include "hot_loader.h"
-#include "message_handler.h"
 
 int scheduler_printf(const char *format, ...)
 {
@@ -43,6 +40,8 @@ int scheduler_printf(const char *format, ...)
 #define MAX_PROCESSES 255
 process_t scheduled_processes[MAX_PROCESSES];
 uint8_t next_process_id = 0;
+
+std::thread scheduler_runtime_thread;
 
 void scheduler_runtime_method(void)
 {
@@ -76,54 +75,51 @@ void scheduler_runtime_method(void)
     for (auto &thread : threads)
     {
         thread.join();
+
+        // join our scheduler_runtime_thread to the main thread, so that we can exit gracefully
+        scheduler_runtime_thread.join();
     }
 }
 
-extern "C"
+uint8_t register_to_scheduler(process_t *process_to_schedule)
 {
-    uint8_t register_to_scheduler(process_t *process_to_schedule)
+    if ((next_process_id == 0) && (strcmp(process_to_schedule->process_name, "overseer") != 0))
     {
-        if ((next_process_id == 0) && (strcmp(process_to_schedule->process_name, "overseer") != 0))
-        {
-            next_process_id++;
-        }
-        if (next_process_id >= MAX_PROCESSES)
-        {
-            scheduler_printf("fatal error: maximum number of scheduled processes (%d) exceeded.\n", MAX_PROCESSES);
-            throw std::runtime_error("maximum number of scheduled processes exceeded");
-            return -1; // Indicate error
-        }
-        if (strcmp(process_to_schedule->process_name, "overseer") == 0)
-        {
-            scheduled_processes[0] = *process_to_schedule;
-            scheduler_printf("process \"%s\" registered with process_ID#%d\n", process_to_schedule->process_name, 0);
-            process_to_schedule->process_id = 0;
-            return 0;
-        }
-        else
-        {
-            scheduled_processes[next_process_id] = *process_to_schedule;
-            scheduler_printf("process \"%s\" registered with process_ID#%d\n", process_to_schedule->process_name, next_process_id);
-            process_to_schedule->process_id = next_process_id;
-            return next_process_id++;
-        }
+        next_process_id++;
     }
-
-    void scheduler_initialize(void)
+    if (next_process_id >= MAX_PROCESSES)
     {
-        scheduler_printf("finalizing...\n");
-
-        initialize_hot_loader();
-
-        initialize_loaded_dlls();
-
-        std::thread scheduler_runtime_thread(scheduler_runtime_method);
-
-        scheduler_printf("complete.\n");
-
-        while (1)
-            ;
-
-        scheduler_runtime_thread.join();
+        scheduler_printf("fatal error: maximum number of scheduled processes (%d) exceeded.\n", MAX_PROCESSES);
+        throw std::runtime_error("maximum number of scheduled processes exceeded");
+        return -1; // Indicate error
     }
+    if (strcmp(process_to_schedule->process_name, "overseer") == 0)
+    {
+        scheduled_processes[0] = *process_to_schedule;
+        scheduler_printf("process \"%s\" registered with process_ID#%d\n", process_to_schedule->process_name, 0);
+        process_to_schedule->process_id = 0;
+        return 0;
+    }
+    else
+    {
+        scheduled_processes[next_process_id] = *process_to_schedule;
+        scheduler_printf("process \"%s\" registered with process_ID#%d\n", process_to_schedule->process_name, next_process_id);
+        process_to_schedule->process_id = next_process_id;
+        return next_process_id++;
+    }
+}
+
+void scheduler_initialize(void)
+{
+    scheduler_printf("finalizing...\n");
+
+    initialize_hot_loader();
+    initialize_loaded_dlls();
+
+    // std::thread scheduler_runtime_thread(scheduler_runtime_method);
+    scheduler_runtime_thread = std::thread(scheduler_runtime_method);
+
+    scheduler_printf("complete.\n");
+
+    // scheduler_runtime_thread.join();
 }

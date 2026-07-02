@@ -1,19 +1,12 @@
-#include "main.h"
-#include <cstdio>
-#include <conio.h>
-#include <ctime>
-#include <windows.h>
-#include <iostream>
+#include "krnl.h"
 
-#include "scheduler.h"
+#include <print>
 
-time_t current_time;
+// time_t current_time;
 
 int main()
 {
-    scheduler_initialize();
+    std::println("CastleMania Kernel v0.1.0");
 
-    printf("Press any key to exit the program...");
-    if (_getch())
-        return 0;
+    krnl_initialize();
 }

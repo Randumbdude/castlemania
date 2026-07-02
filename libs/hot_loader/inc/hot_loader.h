@@ -2,6 +2,9 @@
 
 #include "_H_L__symb.h"
 
+#include <vector>
+#include <windows.h>
+
 #define _H_L__L string("hl_mksr")
 #define _H_L__DEF ("." + _H_L__L)
 

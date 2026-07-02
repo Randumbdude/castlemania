@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <ctime>
-#include <sys/stat.h>
+#include <direct.h>
 
 class TeeBuf : public std::streambuf
 {
@@ -30,7 +30,6 @@ protected:
     }
 };
 
-#include <direct.h>
 void enable_logging()
 {
     static std::ofstream logfile;

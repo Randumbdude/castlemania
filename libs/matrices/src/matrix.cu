@@ -1,7 +1,9 @@
 #include "matrix.h"
+
 #include <iostream>
 #include <stdexcept>
 #include <cmath>
+#include <cstdlib>
 
 #include <cuda_runtime.h>
 

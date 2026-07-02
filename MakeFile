@@ -7,7 +7,7 @@ INCLUDES := \
 	-I./libs/matrices/inc \
 	-I./libs/hot_loader/inc
 
-CXXFLAGS := -std=c++17 -g $(INCLUDES)
+CXXFLAGS := -std=c++26 -g $(INCLUDES)
 NVCCFLAGS := -g $(INCLUDES)
 
 TARGET := "bin/mksr.exe"

@@ -2,7 +2,6 @@
 
 #include <cstdint>
 #include <string>
-#include <windows.h>
 
 typedef std::string string;
 
